@@ -24,36 +24,38 @@ is best to take a look at the [examples](https://github.com/lettucebo/JsonConfig
 
 Usually the developer wants a default configuration that is used when no
 configuration by the user is present whatsoever. Often, this configuration is
-just hardcoded default values within the code. With JsonConfig there is no need
+just hardcoded default values within the code. With JsonConfig.Core there is no need
 for hardcoding, we simply create a default.conf file and embedd it as a
 resource.
 
 Let's create a sample default.conf for a hypothetical grocery store:
 
-	# Lines beginning with # are skipped when the JSON is parsed, so we can
-	# put comments into our JSON configuration files
-	{
-		StoreOwner : "John Doe",
-		
-		# List of items that we sell
-		Fruits: [ "apple", "banana", "pear" ]
-	}
+```json
+# Lines beginning with # are skipped when the JSON is parsed, so we can
+# put comments into our JSON configuration files
+{
+	StoreOwner : "Money Yu",
+
+	# List of items that we sell
+	Fruits: [ "alpha", "bravo", "charle" ]
+}
+```
 
 JsonConfig automatically scan's all assemblies for the presence of a
-default.conf file, so we do not have to add any boilerplate code and can
+default.json file, so we do not have to add any boilerplate code and can
 directly dive in:
 ```csharp
 // exmaple code using our configuration file
-using JsonConfig;
+using JsonConfig.Core;
 [...]
-public void PrintInfo () {
+public void PrintInfo () 
+{
 	var storeOwner = Config.Default.StoreOwner;
 
 	Console.WriteLine ("Hi there, my name is {0}!", storeOwner);
 
 	foreach (var fruit in Config.Default.Fruits)
 		Console.WriteLine (fruit);
-
 }
 ```
 
@@ -61,10 +63,12 @@ However, the developer wants the user to make his own configuration file.
 JsonConfig automatically scans for a settings.conf file in the root path of the
 application.
 
+```json
 	# sample settings.conf
 	{
 		Fruits: [ "melon", "peach" ]	
 	}
+```
 
 The settings.conf and the default.conf are then merged in a clever
 way and provided via the *Global* configuration.
