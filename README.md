@@ -1,12 +1,12 @@
-JsonConfig README
+JsonConfig.Core README
 =====================
 
 ## About
-JsonConfig is a simple to use configuration library, allowing JSON based config
-files for your C#/.NET application instead of cumbersome
+JsonConfig.Core is a simple to use configuration library, allowing JSON based config
+files for your C#/.NET or .NET Core application instead of cumbersome
 web.config/application.config xml files.
 
-It is based on JsonFX and C# 4.0 dynamic feature. Allows putting your programs
+It is based on JSON.Net and C# 4.0 dynamic feature. Allows putting your programs
 config file into .json files, where a default config can be embedded as a
 resource or put in the (web-)application folder. Configuration can be accessed
 via dynamic types, no custom classes or any other stub code is necessary.
@@ -18,8 +18,7 @@ runtime which is a merged version of all provided configuration files.
 ## Example
 
 Since my lack of skills in writing good examples into a documentation file, it
-is best to take a look at the examples/ folder with a complete commented .sln
-which will give you a better understanding (TODO).
+is best to take a look at the [examples](https://github.com/lettucebo/JsonConfig.Core/tree/master/JsonConfig.Core.Example) with a complete commented which will give you a better understanding.
 
 ### Getting started
 
