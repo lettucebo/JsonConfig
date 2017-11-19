@@ -1,32 +1,10 @@
-//
-// Copyright (C) 2012 Timo Dörr
-//
-// Permission is hereby granted, free of charge, to any person obtaining
-// a copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to
-// permit persons to whom the Software is furnished to do so, subject to
-// the following conditions:
-//
-// The above copyright notice and this permission notice shall be
-// included in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
-using System.Dynamic;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 
-namespace JsonConfig
+namespace JsonConfig.Core
 {
 	public static class Merger
 	{
@@ -42,25 +20,25 @@ namespace JsonConfig
 			dynamic obj1 = m_obj1;
 			dynamic obj2 = m_obj2;
 
-			// make sure we only deal with ConfigObject but not ExpandoObject as currently
+			// make sure we only deal with CiConfigObject but not ExpandoObject as currently
 			// return from JsonFX
-			if (obj1 is ExpandoObject) obj1 = ConfigObject.FromExpando (obj1);
-			if (obj2 is ExpandoObject) obj2 = ConfigObject.FromExpando (obj2);
+			if (obj1 is ExpandoObject) obj1 = JsonConfigObject.FromExpandObject (obj1);
+			if (obj2 is ExpandoObject) obj2 = JsonConfigObject.FromExpandObject (obj2);
 
-			// if both objects are NullExceptionPreventer, return a ConfigObject so the
-			// user gets an "Empty" ConfigObject
-			if (obj1 is NullExceptionPreventer && obj2 is NullExceptionPreventer)
-				return new ConfigObject ();
+			// if both objects are NullExceptionPreventer, return a CiConfigObject so the
+			// user gets an "Empty" CiConfigObject
+			if (obj1 is null && obj2 is null)
+				return new JsonConfigObject ();
 
 			// if any object is of NullExceptionPreventer, the other object gets precedence / overruling
-			if (obj1 is NullExceptionPreventer && obj2 is ConfigObject)
+			if (obj1 is null && obj2 is JsonConfigObject)
 				return obj2;
-			if (obj2 is NullExceptionPreventer && obj1 is ConfigObject)
+			if (obj2 is null && obj1 is JsonConfigObject)
 				return obj1;
 
 			// handle what happens if one of the args is null
 			if (obj1 == null && obj2 == null)
-				return new ConfigObject ();
+				return new JsonConfigObject ();
 
 			if (obj2 == null) return obj1;
 			if (obj1 == null) return obj2;
@@ -72,7 +50,7 @@ namespace JsonConfig
 			var dict1 = (IDictionary<string, object>) (obj1);
 			var dict2 = (IDictionary<string, object>) (obj2);
 
-			dynamic result = new ConfigObject ();
+			dynamic result = new JsonConfigObject ();
 			var rdict = (IDictionary<string, object>) result;
 			
 			// first, copy all non colliding keys over
@@ -102,13 +80,13 @@ namespace JsonConfig
 				if (type1 != type2)
 					throw new TypeMissmatchException ();
 
-				if (value1 is ConfigObject[]) {
+				if (value1 is JsonConfigObject[]) {
 					rdict[key] = CollectionMerge (value1, value2);
 					/*var d1 = val1 as IDictionary<string, object>;
 					var d2 = val2 as IDictionary<string, object>;
 					rdict[key] = CollectionMerge (val1, val2); */
 				}
-				else if (value1 is ConfigObject) {
+				else if (value1 is JsonConfigObject) {
 					rdict[key] = Merge (value1, value2);
 				}
 				else if (value1 is string)
@@ -133,7 +111,7 @@ namespace JsonConfig
 		/// First named objects overrule preceeding objects.
 		/// </summary>
 		/// <returns>
-		/// The merged ConfigObject.
+		/// The merged CiConfigObject.
 		/// </returns>
 		/// <param name='objects'>
 		/// List of objects which are to be merged.
@@ -160,8 +138,8 @@ namespace JsonConfig
 			x.AddRange (obj2);
 
 			var obj1_type = obj1.GetType ().GetElementType ();
-			if (obj1_type == typeof (ConfigObject)) 
-				return x.ToArray (typeof(ConfigObject));
+			if (obj1_type == typeof (JsonConfigObject)) 
+				return x.ToArray (typeof(JsonConfigObject));
 			else
 				return x.ToArray (obj1_type);
 		}

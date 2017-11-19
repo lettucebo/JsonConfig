@@ -1,0 +1,14 @@
+﻿{
+    "Version": "1.0.4",
+
+    "Frameworks": {
+        "Dnx451": { },
+        "Dnxcore50": {
+            "xx": "xx",
+            "bb": {
+                "cc": "dd",
+                "ff": "ee"
+            }
+        }
+    }
+}

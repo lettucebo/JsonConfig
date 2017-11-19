@@ -1,0 +1,11 @@
+﻿{
+    "CiMail": {
+        "Server": "smtp.example.com",
+        "Port": "587",
+        "Ssl": "True",
+        "Account": "no-reply@example.com",
+        "Password": "Password",
+        "Sender": "no-reply@example.com",
+        "SenderName": "Sender Name"
+    }
+}

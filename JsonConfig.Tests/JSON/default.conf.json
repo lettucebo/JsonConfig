@@ -1,5 +1,0 @@
-# this is the default config which should be loaded automatically if its embedded as a resource
-{
-	"Sample"	:	"found",
-	"Fruits"	: 	["apple", "peach"]
-} 
