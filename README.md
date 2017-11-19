@@ -2,35 +2,23 @@ JsonConfig.Core README
 =====================
 
 ## About
-JsonConfig.Core is a simple to use configuration library, allowing JSON based config
-files for your C#/.NET or .NET Core application instead of cumbersome
-web.config/application.config xml files.
+JsonConfig.Core is a simple to use configuration library, allowing JSON based config files for your C#/.NET or .NET Core application instead of cumbersome web.config/app.config xml files.
 
-It is based on JSON.Net and C# 4.0 dynamic feature. Allows putting your programs
-config file into .json files, where a default config can be embedded as a
-resource or put in the (web-)application folder. Configuration can be accessed
-via dynamic types, no custom classes or any other stub code is necessary.
+It is based on JSON.Net and C# 4.0 dynamic feature. Allows putting your programs config file into .json files, where a default config can be embedded as a resource or put in the (web-)application folder. Configuration can be accessed via dynamic types, no custom classes or any other stub code is necessary.
 
-JsonConfig brings support for *config inheritance*, meaning a set of
-configuration files can be used to have a single, scoped configuration at
-runtime which is a merged version of all provided configuration files.
+JsonConfig brings support for *config inheritance*, meaning a set of configuration files can be used to have a single, scoped configuration at runtime which is a merged version of all provided configuration files.
 
 ## Example
 
-Since my lack of skills in writing good examples into a documentation file, it
-is best to take a look at the [examples](https://github.com/lettucebo/JsonConfig.Core/tree/master/JsonConfig.Core.Example) with a complete commented which will give you a better understanding.
+Since my lack of skills in writing good examples into a documentation file, it is best to take a look at the [examples](https://github.com/lettucebo/JsonConfig.Core/tree/master/JsonConfig.Core.Example) with a complete commented which will give you a better understanding.
 
 ### Getting started
 
-Usually the developer wants a default configuration that is used when no
-configuration by the user is present whatsoever. Often, this configuration is
-just hardcoded default values within the code. With JsonConfig.Core there is no need
-for hardcoding, we simply create a default.conf file and embedd it as a
-resource.
+Usually the developer wants a default configuration that is used when no configuration by the user is present whatsoever. Often, this configuration is just hardcoded default values within the code. With JsonConfig.Core there is no need for hardcoding, we simply create a default.conf file and embedd it as a resource.
 
 Let's create a sample default.conf for a hypothetical grocery store:
 
-```json
+```
 # Lines beginning with # are skipped when the JSON is parsed, so we can
 # put comments into our JSON configuration files
 {
@@ -41,9 +29,8 @@ Let's create a sample default.conf for a hypothetical grocery store:
 }
 ```
 
-JsonConfig automatically scan's all assemblies for the presence of a
-default.json file, so we do not have to add any boilerplate code and can
-directly dive in:
+JsonConfig automatically scan's all assemblies for the presence of a `default.json` file, so we do not have to add any boilerplate code and can directly dive in:
+
 ```csharp
 // exmaple code using our configuration file
 using JsonConfig.Core;
@@ -59,19 +46,8 @@ public void PrintInfo ()
 }
 ```
 
-However, the developer wants the user to make his own configuration file.
-JsonConfig automatically scans for a settings.conf file in the root path of the
-application.
+The settings.json and the default.conf are then merged in a clever way and provided via the *Global* configuration.
 
-```json
-	# sample settings.conf
-	{
-		Fruits: [ "melon", "peach" ]	
-	}
-```
-
-The settings.conf and the default.conf are then merged in a clever
-way and provided via the *Global* configuration.
 ```csharp
 public void PrintInfo () {
 	// will result in apple, banana, pear 
