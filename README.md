@@ -107,64 +107,18 @@ Above configuration could be accessed via:
 using JsonConfig.Core;
 [...]
 
-public void StartWebserver () {
+public void StartWebserver () 
+{
 	// access via Config.Global
 	string serverName = Config.Global.ServerProgramName;
 	bool caching = Config.Global.EnableCaching;
 	int[] listenPorts = Config.Global.ListenPorts;
 
-	foreach (dynamic website in Config.Global.Websites) {
+	foreach (dynamic website in Config.Global.Websites) 
+	{
 		StartNewVhost (website.Path, website.Domain, website.Contact);
 	}
 }
 ```
 
-### "Magic" prevention of null pointer exceptions
-
-Choosing reasonable default values is only a matter of supplying a good
-default.conf. But using some C# 4.0 dynamic "magic", non-existant configuration
-values will not throw a NullPointer exception:
-
-```csharp
-// we are lazy and do not want to give default values for configuration
-// objects, but just want them to be false
-
-// there is no need to have LoadedModules OR HttpServer in your
-// default.conf, if missing this will just evaluate to false
-if (Config.Global.LoadedModules.HttpServer) {
-	// start HttpServer
-}
-
-// more drastic example, its safe to write
-if (Config.Global.nonexistant.field.that.never.will.be.given) {
-	// this will never be run unless you create that structure in your
-	// config files
-}
-
-// when the configuration value is cast to string, it will be null if not
-// given
-if (string.IsNullOrEmpty (Config.Global.some.nonexistant.nested.field)) {
-	// will most likely be run all the times
-}
-```
-
-The "magic" allows you to cast a not-yet existing field to common types, which will then have empty or default values:
-```csharp
-foreach (string name in Config.Global.NonExistantField as string[]) {
-	// instead of being cast to null, if a non-existing field is cast to string[] it
-	// will just be an empty array: string[] { }
-	Console.WriteLine (name);
-}
-
-// works for nullable types, too. Nullable types will
-// cast to null if not exsisting in the config.
-var processFiles = (bool?) Config.Global.ProcessFiles;
-if (processFiles != null) {
-	// will only be run if ProcessFiles is present in the config
-	DoSomethingWithDirectory (processFiles);
-}
-```
-
-
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/Dynalon/jsonconfig/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
