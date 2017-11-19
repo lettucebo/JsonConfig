@@ -1,4 +1,4 @@
-JsonConfig.Core README
+README
 =====================
 
 ## About
@@ -45,11 +45,20 @@ public void PrintInfo ()
 		Console.WriteLine (fruit);
 }
 ```
+However, the developer wants the user to make his own configuration file. JsonConfig.Core automatically scans for a json files in the `App_Data` folder path of the application.
 
-The settings.json and the default.conf are then merged in a clever way and provided via the *Global* configuration.
+```
+# sample settings.conf
+{
+	Fruits: [ "melon", "peach" ]	
+}
+```
+
+The `App_Data folder json files` and the `default.json` are then merged in a clever way and provided via the *Global* configuration.
 
 ```csharp
-public void PrintInfo () {
+public void PrintInfo () 
+{
 	// will result in apple, banana, pear 
 	foreach (var fruit in Config.Default.Fruits)
 		Console.WriteLine (fruit);
@@ -63,37 +72,39 @@ public void PrintInfo () {
 	// will result in apple, banana, pear, melon, peach
 	foreach (var fruit in Config.Global.Fruits)
 		Console.WriteLine (fruit);
-
 }
 ```
+
 ### Nesting objects
 
 We are not bound to any hierarchies, any valid JSON is a valid configuration
 object. Take for example a hypothetical webserver configuration:
 
-	{
-		ListenPorts: [ 80, 443 ],
-		EnableCaching : true,
-		ServerProgramName: "Hypothetical WebServer 1.0",
+```
+{
+	ListenPorts: [ 80, 443 ],
+	EnableCaching : true,
+	ServerProgramName: "Hypothetical WebServer 1.0",
 
-		Websites: [
-			{
-				Path: "/srv/www/example/",
-				Domain: "example.com",
-				Contact: "admin@example.com"	
-			},
-			{
-				Path: "/srv/www/somedomain/",
-				Domain: "somedomain.com",
-				Contact: "admin@somedomain.com"
-			}
-		]
-	}	
+	Websites: [
+		{
+			Path: "/srv/www/example/",
+			Domain: "example.com",
+			Contact: "admin@example.com"	
+		},
+		{
+			Path: "/srv/www/somedomain/",
+			Domain: "somedomain.com",
+			Contact: "admin@somedomain.com"
+		}
+	]
+}
+```
 
 Above configuration could be accessed via:
 
 ```csharp
-using JsonConfig;
+using JsonConfig.Core;
 [...]
 
 public void StartWebserver () {
