@@ -1,6 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/lettucebo/JsonConfig.Core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/lettucebo/JsonConfig.Core</RepositoryUrl>
+    <PackageIconUrl>https://i.imgur.com/3xZ4Cdx.png</PackageIconUrl>
+    <PackageTags>json,config</PackageTags>
+    <Authors>Money Yu</Authors>
+    <Company>Money.Yu</Company>
+    <Description>JsonConfig.Core is a simple to use configuration library, allowing JSON based config files for your C#/.NET or .NET Core application instead of cumbersome web.config/app.config xml files.</Description>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\JsonConfig.Core.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
